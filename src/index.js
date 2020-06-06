@@ -37,8 +37,8 @@ function createArena(width, height) {
     return matrix;
 }
 
-function sweepArena(arena) {
-    for (let y = arena.length - 1; y >= 0; y -= 1) {
+function sweepArena(arena, player) {
+    for (let y = arena.length - 1, rowCount = 1; y >= 0; y -= 1) {
         if (arena[y].every(value => value !== 0)) {
             console.log('found fill');
             const row = arena.splice(y, 1)[0].fill(0);
@@ -46,6 +46,8 @@ function sweepArena(arena) {
             arena.unshift(row);
 
             y += 1;
+            player.score += rowCount * 10;
+            rowCount *= 2;
         }
     }
 }
@@ -140,6 +142,10 @@ function clearCanvas() {
     context.fillRect(0, 0, WIDTH, HEIGHT);
 }
 
+function updateScore(player) {
+    document.getElementById('score').innerText = `Score: ${player.score}`;
+}
+
 function draw(arena, player) {
     clearCanvas();
     drawMatrix(arena, ORIGIN);
@@ -168,9 +174,12 @@ function generatePlayerController() {
 
     const playerReset = (arena, player) => {
         const pieces = 'ILJOTSZ';
+
         player.matrix = createPiece(pieces[pieces.length * Math.random() | 0]);
         player.offset.y = 0;
         player.offset.x = (arena[0].length / 2 | 0) - (player.matrix[0].length / 2 | 0);
+
+        updateScore(player);
 
         if (collide(arena, player)) {
             arena.forEach(row => row.fill(0));
@@ -183,7 +192,7 @@ function generatePlayerController() {
         if (collide(arena, player)) {
             player.offset.y--;
             merge(arena, player);
-            sweepArena(arena);
+            sweepArena(arena, player);
             playerReset(arena, player);
         }
 
@@ -239,7 +248,9 @@ function startGame() {
     const arena = createArena(ARENA_WIDTH, ARENA_HEIGHT);
 
     const player = {
-        offset: {}
+        offset: {},
+        matrix: null,
+        score: 0,
     };
 
     controller.playerReset(arena, player);
