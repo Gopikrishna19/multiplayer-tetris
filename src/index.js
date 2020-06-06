@@ -50,8 +50,9 @@ function clearCanvas() {
     context.fillRect(0, 0, WIDTH, HEIGHT);
 }
 
-function draw(player) {
+function draw(arena, player) {
     clearCanvas();
+    drawMatrix(arena, ORIGIN);
     drawMatrix(player.matrix, player.offset);
 }
 
@@ -87,6 +88,15 @@ function generateDropTimer() {
         dropCounter = 0;
     };
 
+    const playerMove = (arena, player, direction) => {
+        player.offset.x += direction;
+
+        if (collide(arena, player)) {
+            player.offset.x -= direction;
+        }
+    };
+
+
     return {
         drop: function (time, arena, player) {
             const deltaTime = time - lastTime;
@@ -99,6 +109,7 @@ function generateDropTimer() {
             }
         },
         playerDrop: playerDrop,
+        playerMove: playerMove,
     };
 }
 
@@ -120,10 +131,10 @@ function startGame() {
     document.addEventListener('keydown', (event) => {
         switch (event.key) {
             case 'ArrowLeft':
-                player.offset.x -= 1;
+                timedDrop.playerMove(arena, player, -1);
                 break;
             case 'ArrowRight':
-                player.offset.x += 1;
+                timedDrop.playerMove(arena, player, +1);
                 break;
             case 'ArrowDown':
                 timedDrop.playerDrop(arena, player);
