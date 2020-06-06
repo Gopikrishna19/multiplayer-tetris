@@ -10,6 +10,16 @@ const ORIGIN = {
     x: 0,
     y: 0,
 };
+const COLORS = [
+    null,
+    'red',
+    'blue',
+    'violet',
+    'green',
+    'purple',
+    'orange',
+    'pink',
+];
 
 canvas.setAttribute('height', `${HEIGHT}`);
 canvas.setAttribute('width', `${WIDTH}`);
@@ -127,7 +137,7 @@ function drawMatrix(matrix, offset) {
     matrix.forEach((row, y) => {
         row.forEach((value, x) => {
             if (value !== 0) {
-                context.fillStyle = 'red';
+                context.fillStyle = COLORS[value];
                 context.fillRect(
                     x + offset.x,
                     y + offset.y,
@@ -205,6 +215,7 @@ function generatePlayerController() {
         },
         playerDrop: playerDrop,
         playerMove: playerMove,
+        playerReset: playerReset,
         playerRotate: playerRotate,
     };
 }
@@ -213,16 +224,11 @@ function startGame() {
     const controller = generatePlayerController();
     const arena = createArena(ARENA_WIDTH, ARENA_HEIGHT);
 
-    const matrix = [
-        [0, 0, 0],
-        [1, 1, 1],
-        [0, 1, 0],
-    ];
-
     const player = {
-        offset: {x: 5, y: 5},
-        matrix: matrix,
+        offset: {}
     };
+
+    controller.playerReset(arena, player);
 
     document.addEventListener('keydown', (event) => {
         switch (event.key) {
