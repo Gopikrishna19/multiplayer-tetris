@@ -23,6 +23,24 @@ function createArena(width, height) {
     return matrix;
 }
 
+function collide(arena, player) {
+    return player.matrix.some((row, y) => {
+        return row.some((value, x) => {
+            return value !== 0 && (arena[y + player.offset.y] && arena[y + player.offset.y][x + player.offset.x]) !== 0;
+        });
+    });
+}
+
+function merge(arena, player) {
+    player.matrix.forEach((row, y) => {
+        row.forEach((value, x) => {
+            if (value !== 0) {
+                arena[y + player.offset.y][x + player.offset.x] = value;
+            }
+        });
+    });
+}
+
 function clearCanvas() {
     context.fillStyle = '#000';
     context.fillRect(0, 0, WIDTH, HEIGHT);
@@ -53,21 +71,30 @@ function generateDropTimer() {
     let dropInterval = 1000;
     let lastTime = 0;
 
+    const playerDrop = (arena, player) => {
+        player.offset.y += 1;
+
+        if (collide(arena, player)) {
+            player.offset.y -= 1;
+            merge(arena, player);
+            player.offset.y = 0;
+        }
+
+        dropCounter = 0;
+    };
+
     return {
-        drop: function (time, player) {
+        drop: function (time, arena, player) {
             const deltaTime = time - lastTime;
 
             lastTime = time;
             dropCounter += deltaTime;
 
             if (dropCounter > dropInterval) {
-                player.offset.y += 1;
-                dropCounter = 0;
+                playerDrop(arena, player);
             }
         },
-        set dropCounter(value) {
-            dropCounter = value;
-        },
+        playerDrop: playerDrop,
     };
 }
 
@@ -95,14 +122,13 @@ function startGame() {
                 player.offset.x += 1;
                 break;
             case 'ArrowDown':
-                player.offset.y += 1;
-                timedDrop.dropCounter = 0;
+                timedDrop.playerDrop(arena, player);
                 break;
         }
     });
 
     return function render(time = 0) {
-        timedDrop.drop(time, player);
+        timedDrop.drop(time, arena, player);
         draw(player);
         requestAnimationFrame(render);
     }
