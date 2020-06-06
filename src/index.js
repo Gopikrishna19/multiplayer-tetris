@@ -179,11 +179,12 @@ function generatePlayerController() {
         player.offset.y = 0;
         player.offset.x = (arena[0].length / 2 | 0) - (player.matrix[0].length / 2 | 0);
 
-        updateScore(player);
-
         if (collide(arena, player)) {
             arena.forEach(row => row.fill(0));
+            player.score = 0;
         }
+
+        updateScore(player);
     };
 
     const playerDrop = (arena, player) => {
