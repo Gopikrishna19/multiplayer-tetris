@@ -1,9 +1,9 @@
 const canvas = document.getElementById('tetris');
 const context = canvas.getContext('2d');
 
-const HEIGHT = 400;
-const WIDTH = 240;
-const SCALE = 20;
+const HEIGHT = 800;
+const WIDTH = 480;
+const SCALE = 40;
 const ARENA_HEIGHT = HEIGHT / SCALE;
 const ARENA_WIDTH = WIDTH / SCALE;
 const ORIGIN = {
@@ -35,6 +35,19 @@ function createArena(width, height) {
     }
 
     return matrix;
+}
+
+function sweepArena(arena) {
+    for (let y = arena.length - 1; y >= 0; y -= 1) {
+        if (arena[y].every(value => value !== 0)) {
+            console.log('found fill');
+            const row = arena.splice(y, 1)[0].fill(0);
+
+            arena.unshift(row);
+
+            y += 1;
+        }
+    }
 }
 
 function collide(arena, player) {
@@ -170,6 +183,7 @@ function generatePlayerController() {
         if (collide(arena, player)) {
             player.offset.y--;
             merge(arena, player);
+            sweepArena(arena);
             playerReset(arena, player);
         }
 
