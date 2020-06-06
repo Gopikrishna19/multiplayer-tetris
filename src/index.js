@@ -6,6 +6,10 @@ const WIDTH = 240;
 const SCALE = 20;
 const ARENA_HEIGHT = HEIGHT / SCALE;
 const ARENA_WIDTH = WIDTH / SCALE;
+const ORIGIN = {
+    x: 0,
+    y: 0,
+};
 
 canvas.setAttribute('height', `${HEIGHT}`);
 canvas.setAttribute('width', `${WIDTH}`);
@@ -16,7 +20,7 @@ function createArena(width, height) {
     const matrix = [];
     let h = height;
 
-    while (h -= 1) {
+    while (h--) {
         matrix.push(new Array(width).fill(0));
     }
 
@@ -72,10 +76,10 @@ function generateDropTimer() {
     let lastTime = 0;
 
     const playerDrop = (arena, player) => {
-        player.offset.y += 1;
+        player.offset.y++;
 
         if (collide(arena, player)) {
-            player.offset.y -= 1;
+            player.offset.y--;
             merge(arena, player);
             player.offset.y = 0;
         }
@@ -129,7 +133,7 @@ function startGame() {
 
     return function render(time = 0) {
         timedDrop.drop(time, arena, player);
-        draw(player);
+        draw(arena, player);
         requestAnimationFrame(render);
     }
 }
