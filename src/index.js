@@ -12,13 +12,13 @@ const ORIGIN = {
 };
 const COLORS = [
     null,
-    'red',
-    'blue',
-    'violet',
-    'green',
     'purple',
+    'yellow',
     'orange',
-    'pink',
+    'blue',
+    'aqua',
+    'green',
+    'red'
 ];
 
 canvas.setAttribute('height', `${HEIGHT}`);
