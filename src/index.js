@@ -16,6 +16,11 @@ const matrix = [
     [0, 1, 0],
 ];
 
+const player = {
+    offset: {x: 5, y: 5},
+    matrix: matrix,
+};
+
 function clearCanvas() {
     context.fillStyle = '#000';
     context.fillRect(0, 0, WIDTH, HEIGHT);
@@ -41,14 +46,30 @@ function drawMatrix(matrix, offset) {
     });
 }
 
-function render() {
-    draw();
-    requestAnimationFrame(draw);
+function generateDropTimer() {
+    let dropCounter = 0;
+    let dropInterval = 1000;
+    let lastTime = 0;
+
+    return function (time) {
+        const deltaTime = time - lastTime;
+
+        lastTime = time;
+        dropCounter += deltaTime;
+
+        if (dropCounter > dropInterval) {
+            player.offset.y += 1;
+            dropCounter = 0;
+        }
+    };
 }
 
-const player = {
-    offset: {x: 5, y: 5},
-    matrix: matrix,
-};
+const timedDrop = generateDropTimer();
+
+function render(time = 0) {
+    timedDrop(time);
+    draw();
+    requestAnimationFrame(render);
+}
 
 render();
