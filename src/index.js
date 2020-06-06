@@ -65,6 +65,53 @@ function rotateMatrix(matrix, direction) {
     }
 }
 
+function createPiece(type) {
+    switch (type) {
+        case 'T':
+            return [
+                [0, 0, 0],
+                [1, 1, 1],
+                [0, 1, 0],
+            ];
+        case 'O':
+            return [
+                [2, 2],
+                [2, 2],
+            ];
+        case 'L':
+            return [
+                [0, 3, 0],
+                [0, 3, 0],
+                [0, 3, 3],
+            ];
+        case 'J':
+            return [
+                [0, 4, 0],
+                [0, 4, 0],
+                [4, 4, 0],
+            ];
+        case 'S':
+            return [
+                [0, 0, 0],
+                [0, 5, 5],
+                [5, 5, 0],
+            ];
+        case 'Z':
+            return [
+                [0, 0, 0],
+                [6, 6, 0],
+                [0, 6, 6],
+            ];
+        case 'I':
+            return [
+                [0, 7, 0, 0],
+                [0, 7, 0, 0],
+                [0, 7, 0, 0],
+                [0, 7, 0, 0],
+            ];
+    }
+}
+
 function clearCanvas() {
     context.fillStyle = '#000';
     context.fillRect(0, 0, WIDTH, HEIGHT);
@@ -91,10 +138,21 @@ function drawMatrix(matrix, offset) {
     });
 }
 
-function generateDropTimer() {
+function generatePlayerController() {
     let dropCounter = 0;
     let dropInterval = 1000;
     let lastTime = 0;
+
+    const playerReset = (arena, player) => {
+        const pieces = 'ILJOTSZ';
+        player.matrix = createPiece(pieces[pieces.length * Math.random() | 0]);
+        player.offset.y = 0;
+        player.offset.x = (arena[0].length / 2 | 0) - (player.matrix[0].length / 2 | 0);
+
+        if (collide(arena, player)) {
+            arena.forEach(row => row.fill(0));
+        }
+    };
 
     const playerDrop = (arena, player) => {
         player.offset.y++;
@@ -102,7 +160,7 @@ function generateDropTimer() {
         if (collide(arena, player)) {
             player.offset.y--;
             merge(arena, player);
-            player.offset.y = 0;
+            playerReset(arena, player);
         }
 
         dropCounter = 0;
@@ -135,7 +193,7 @@ function generateDropTimer() {
     };
 
     return {
-        drop: function (time, arena, player) {
+        autoDrop: function (time, arena, player) {
             const deltaTime = time - lastTime;
 
             lastTime = time;
@@ -152,7 +210,7 @@ function generateDropTimer() {
 }
 
 function startGame() {
-    const timedDrop = generateDropTimer();
+    const controller = generatePlayerController();
     const arena = createArena(ARENA_WIDTH, ARENA_HEIGHT);
 
     const matrix = [
@@ -169,27 +227,27 @@ function startGame() {
     document.addEventListener('keydown', (event) => {
         switch (event.key) {
             case 'ArrowLeft':
-                timedDrop.playerMove(arena, player, -1);
+                controller.playerMove(arena, player, -1);
                 break;
             case 'ArrowRight':
-                timedDrop.playerMove(arena, player, +1);
+                controller.playerMove(arena, player, +1);
                 break;
             case 'ArrowDown':
-                timedDrop.playerDrop(arena, player);
+                controller.playerDrop(arena, player);
                 break;
             case 'q':
             case 'Q':
-                timedDrop.playerRotate(arena, player, -1);
+                controller.playerRotate(arena, player, -1);
                 break;
             case 'e':
             case 'E':
-                timedDrop.playerRotate(arena, player, +1);
+                controller.playerRotate(arena, player, +1);
                 break;
         }
     });
 
     return function render(time = 0) {
-        timedDrop.drop(time, arena, player);
+        controller.autoDrop(time, arena, player);
         draw(arena, player);
         requestAnimationFrame(render);
     }
