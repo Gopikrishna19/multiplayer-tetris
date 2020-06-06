@@ -45,6 +45,26 @@ function merge(arena, player) {
     });
 }
 
+function rotateMatrix(matrix, direction) {
+    for (let y = 0; y < matrix.length; y += 1) {
+        for (let x = 0; x < y; x += 1) {
+            [
+                matrix[x][y],
+                matrix[y][x],
+            ] = [
+                matrix[y][x],
+                matrix[x][y],
+            ];
+        }
+    }
+
+    if (direction > 0) {
+        matrix.forEach(row => row.reverse());
+    } else {
+        matrix.reverse();
+    }
+}
+
 function clearCanvas() {
     context.fillStyle = '#000';
     context.fillRect(0, 0, WIDTH, HEIGHT);
@@ -96,6 +116,23 @@ function generateDropTimer() {
         }
     };
 
+    const playerRotate = (arena, player, direction) => {
+        rotateMatrix(player.matrix, direction);
+        const playerOffset = player.offset.x;
+        let offset = 1;
+
+        while (collide(arena, player)) {
+            player.offset.x += offset;
+            offset = -(offset + (offset > 0 ? 1 : -1));
+
+            if (offset > player.matrix[0].length) {
+                rotateMatrix(player.matrix, -direction);
+                player.offset.x = playerOffset;
+
+                return;
+            }
+        }
+    };
 
     return {
         drop: function (time, arena, player) {
@@ -110,6 +147,7 @@ function generateDropTimer() {
         },
         playerDrop: playerDrop,
         playerMove: playerMove,
+        playerRotate: playerRotate,
     };
 }
 
@@ -138,6 +176,14 @@ function startGame() {
                 break;
             case 'ArrowDown':
                 timedDrop.playerDrop(arena, player);
+                break;
+            case 'q':
+            case 'Q':
+                timedDrop.playerRotate(arena, player, -1);
+                break;
+            case 'e':
+            case 'E':
+                timedDrop.playerRotate(arena, player, +1);
                 break;
         }
     });
