@@ -257,6 +257,7 @@ function startGame() {
                 break;
             case 'q':
             case 'Q':
+            case 'ArrowUp':
                 controller.playerRotate(arena, player, -1);
                 break;
             case 'e':
