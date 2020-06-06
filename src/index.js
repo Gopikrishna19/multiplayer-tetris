@@ -10,14 +10,21 @@ canvas.setAttribute('width', `${WIDTH}`);
 
 context.scale(SCALE, SCALE);
 
-context.fillStyle = '#000';
-context.fillRect(0, 0, WIDTH, HEIGHT);
-
 const matrix = [
     [0, 0, 0],
     [1, 1, 1],
     [0, 1, 0],
 ];
+
+function clearCanvas() {
+    context.fillStyle = '#000';
+    context.fillRect(0, 0, WIDTH, HEIGHT);
+}
+
+function draw() {
+    clearCanvas();
+    drawMatrix(player.matrix, player.offset);
+}
 
 function drawMatrix(matrix, offset) {
     matrix.forEach((row, y) => {
@@ -34,9 +41,14 @@ function drawMatrix(matrix, offset) {
     });
 }
 
+function render() {
+    draw();
+    requestAnimationFrame(draw);
+}
+
 const player = {
     offset: {x: 5, y: 5},
     matrix: matrix,
 };
 
-drawMatrix(player.matrix, player.offset);
+render();
