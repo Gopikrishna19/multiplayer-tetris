@@ -1,9 +1,9 @@
 const canvas = document.getElementById('tetris');
 const context = canvas.getContext('2d');
 
-const HEIGHT = 800;
-const WIDTH = 480;
-const SCALE = 40;
+const HEIGHT = 400;
+const WIDTH = 240;
+const SCALE = HEIGHT / 20;
 const ARENA_HEIGHT = HEIGHT / SCALE;
 const ARENA_WIDTH = WIDTH / SCALE;
 const ORIGIN = {
