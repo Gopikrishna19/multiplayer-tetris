@@ -51,25 +51,45 @@ function generateDropTimer() {
     let dropInterval = 1000;
     let lastTime = 0;
 
-    return function (time) {
-        const deltaTime = time - lastTime;
+    return {
+        drop: function (time) {
+            const deltaTime = time - lastTime;
 
-        lastTime = time;
-        dropCounter += deltaTime;
+            lastTime = time;
+            dropCounter += deltaTime;
 
-        if (dropCounter > dropInterval) {
-            player.offset.y += 1;
-            dropCounter = 0;
-        }
+            if (dropCounter > dropInterval) {
+                player.offset.y += 1;
+                dropCounter = 0;
+            }
+        },
+        set dropCounter(value) {
+            dropCounter = value;
+        },
     };
 }
 
 const timedDrop = generateDropTimer();
 
 function render(time = 0) {
-    timedDrop(time);
+    timedDrop.drop(time);
     draw();
     requestAnimationFrame(render);
 }
+
+document.addEventListener('keydown', (event) => {
+    switch (event.key) {
+        case 'ArrowLeft':
+            player.offset.x -= 1;
+            break;
+        case 'ArrowRight':
+            player.offset.x += 1;
+            break;
+        case 'ArrowDown':
+            player.offset.y += 1;
+            timedDrop.dropCounter = 0;
+            break;
+    }
+});
 
 render();
