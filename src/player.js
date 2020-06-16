@@ -1,6 +1,7 @@
 class Player {
     #dropCounter = 0;
     #dropInterval = 1000;
+    #onScore = [];
 
     constructor() {
         this.offset = {
@@ -40,6 +41,16 @@ class Player {
         }
     };
 
+    onScore = (listener) => {
+        this.#onScore.push(listener);
+
+        return () => {
+            const index = this.#onScore.findIndex(value => listener === value);
+
+            this.#onScore.splice(index, 1);
+        };
+    }
+
     reset = (arena) => {
         this.piece = new Piece();
         this.offset.y = 0;
@@ -50,7 +61,7 @@ class Player {
             this.score = 0;
         }
 
-        updateScore(this);
+        this.updateScore();
     };
 
     rotate = (arena, direction) => {
@@ -70,4 +81,8 @@ class Player {
             }
         }
     };
+
+    updateScore = () => {
+        this.#onScore.forEach(listener => listener(this.score));
+    }
 }
