@@ -1,35 +1,35 @@
 function getPieceCreator() {
     const PIECES = {
-        'T': [
+        T: [
             [0, 0, 0],
             [1, 1, 1],
             [0, 1, 0],
         ],
-        'O': [
+        O: [
             [2, 2],
             [2, 2],
         ],
-        'L': [
+        L: [
             [0, 3, 0],
             [0, 3, 0],
             [0, 3, 3],
         ],
-        'J': [
+        J: [
             [0, 4, 0],
             [0, 4, 0],
             [4, 4, 0],
         ],
-        'S': [
+        S: [
             [0, 0, 0],
             [0, 5, 5],
             [5, 5, 0],
         ],
-        'Z': [
+        Z: [
             [0, 0, 0],
             [6, 6, 0],
             [0, 6, 6],
         ],
-        'I': [
+        I: [
             [0, 7, 0, 0],
             [0, 7, 0, 0],
             [0, 7, 0, 0],
@@ -37,7 +37,10 @@ function getPieceCreator() {
         ],
     };
 
-    return function (type) {
+    return function () {
+        const pieces = 'ILJOTSZ';
+        const type = pieces[pieces.length * Math.random() | 0];
+
         return PIECES[type];
     };
 }

@@ -126,9 +126,7 @@ function generatePlayerController() {
     let lastTime = 0;
 
     const playerReset = (arena, player) => {
-        const pieces = 'ILJOTSZ';
-
-        player.matrix = createPiece(pieces[pieces.length * Math.random() | 0]);
+        player.matrix = createPiece();
         player.offset.y = 0;
         player.offset.x = (arena[0].length / 2 | 0) - (player.matrix[0].length / 2 | 0);
 
@@ -201,11 +199,7 @@ function startGame() {
     const controller = generatePlayerController();
     const arena = createArena(ARENA_WIDTH, ARENA_HEIGHT);
 
-    const player = {
-        offset: {},
-        matrix: null,
-        score: 0,
-    };
+    const player = new Player();
 
     controller.playerReset(arena, player);
 
