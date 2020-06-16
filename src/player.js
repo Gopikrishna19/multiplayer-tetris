@@ -22,11 +22,10 @@ class Player {
     drop = (arena) => {
         this.offset.y++;
 
-        if (collide(arena, this)) {
+        if (arena.isColliding(this)) {
             this.offset.y--;
-            merge(arena, this);
-            sweepArena(arena, this);
-
+            arena.merge(this);
+            this.score += arena.sweepAndScore(this);
             this.reset(arena, this);
         }
 
@@ -36,7 +35,7 @@ class Player {
     move = (arena, direction) => {
         this.offset.x += direction;
 
-        if (collide(arena, this)) {
+        if (arena.isColliding(this)) {
             this.offset.x -= direction;
         }
     };
@@ -46,7 +45,7 @@ class Player {
         this.offset.y = 0;
         this.offset.x = (arena[0].length / 2 | 0) - (this.piece[0].length / 2 | 0);
 
-        if (collide(arena, this)) {
+        if (arena.isColliding(this)) {
             arena.forEach(row => row.fill(0));
             this.score = 0;
         }
@@ -59,7 +58,7 @@ class Player {
         const playerOffset = this.offset.x;
         let offset = 1;
 
-        while (collide(arena, this)) {
+        while (arena.isColliding(this)) {
             this.offset.x += offset;
             offset = -(offset + (offset > 0 ? 1 : -1));
 

@@ -26,50 +26,6 @@ canvas.setAttribute('width', `${WIDTH}`);
 
 context.scale(SCALE, SCALE);
 
-function createArena(width, height) {
-    const matrix = [];
-    let h = height;
-
-    while (h--) {
-        matrix.push(new Array(width).fill(0));
-    }
-
-    return matrix;
-}
-
-function sweepArena(arena, player) {
-    for (let y = arena.length - 1, rowCount = 1; y >= 0; y -= 1) {
-        if (arena[y].every(value => value !== 0)) {
-            console.log('found fill');
-            const row = arena.splice(y, 1)[0].fill(0);
-
-            arena.unshift(row);
-
-            y += 1;
-            player.score += rowCount * 10;
-            rowCount *= 2;
-        }
-    }
-}
-
-function collide(arena, player) {
-    return player.piece.some((row, y) => {
-        return row.some((value, x) => {
-            return value !== 0 && (arena[y + player.offset.y] && arena[y + player.offset.y][x + player.offset.x]) !== 0;
-        });
-    });
-}
-
-function merge(arena, player) {
-    player.piece.forEach((row, y) => {
-        row.forEach((value, x) => {
-            if (value !== 0) {
-                arena[y + player.offset.y][x + player.offset.x] = value;
-            }
-        });
-    });
-}
-
 function clearCanvas() {
     context.fillStyle = '#000';
     context.fillRect(0, 0, WIDTH, HEIGHT);
@@ -101,8 +57,7 @@ function drawMatrix(matrix, offset) {
 }
 
 function startGame() {
-    const arena = createArena(ARENA_WIDTH, ARENA_HEIGHT);
-
+    const arena = new Arena(ARENA_WIDTH, ARENA_HEIGHT);
     const player = new Player();
 
     player.reset(arena);
