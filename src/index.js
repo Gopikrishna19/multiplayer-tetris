@@ -53,7 +53,7 @@ function sweepArena(arena, player) {
 }
 
 function collide(arena, player) {
-    return player.matrix.some((row, y) => {
+    return player.piece.some((row, y) => {
         return row.some((value, x) => {
             return value !== 0 && (arena[y + player.offset.y] && arena[y + player.offset.y][x + player.offset.x]) !== 0;
         });
@@ -61,7 +61,7 @@ function collide(arena, player) {
 }
 
 function merge(arena, player) {
-    player.matrix.forEach((row, y) => {
+    player.piece.forEach((row, y) => {
         row.forEach((value, x) => {
             if (value !== 0) {
                 arena[y + player.offset.y][x + player.offset.x] = value;
@@ -102,7 +102,7 @@ function updateScore(player) {
 function draw(arena, player) {
     clearCanvas();
     drawMatrix(arena, ORIGIN);
-    drawMatrix(player.matrix, player.offset);
+    drawMatrix(player.piece, player.offset);
 }
 
 function drawMatrix(matrix, offset) {

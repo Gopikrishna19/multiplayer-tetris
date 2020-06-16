@@ -7,7 +7,7 @@ class Player {
             x: 0,
             y: 0,
         };
-        this.matrix = null;
+        this.piece = null;
         this.score = 0;
     }
 
@@ -42,9 +42,9 @@ class Player {
     };
 
     reset = (arena) => {
-        this.matrix = createPiece();
+        this.piece = createPiece();
         this.offset.y = 0;
-        this.offset.x = (arena[0].length / 2 | 0) - (this.matrix[0].length / 2 | 0);
+        this.offset.x = (arena[0].length / 2 | 0) - (this.piece[0].length / 2 | 0);
 
         if (collide(arena, this)) {
             arena.forEach(row => row.fill(0));
@@ -55,7 +55,7 @@ class Player {
     };
 
     rotate = (arena, direction) => {
-        rotateMatrix(this.matrix, direction);
+        rotateMatrix(this.piece, direction);
         const playerOffset = this.offset.x;
         let offset = 1;
 
@@ -63,8 +63,8 @@ class Player {
             this.offset.x += offset;
             offset = -(offset + (offset > 0 ? 1 : -1));
 
-            if (offset > this.matrix[0].length) {
-                rotateMatrix(this.matrix, -direction);
+            if (offset > this.piece[0].length) {
+                rotateMatrix(this.piece, -direction);
                 this.offset.x = playerOffset;
 
                 return;
