@@ -1,7 +1,6 @@
 class Player {
     #dropCounter = 0;
     #dropInterval = 1000;
-    #lastTime = 0;
 
     constructor() {
         this.offset = {
@@ -12,10 +11,7 @@ class Player {
         this.score = 0;
     }
 
-    autoDrop = (time, arena) => {
-        const deltaTime = time - this.#lastTime;
-
-        this.#lastTime = time;
+    autoDrop = (deltaTime, arena) => {
         this.#dropCounter += deltaTime;
 
         if (this.#dropCounter > this.#dropInterval) {

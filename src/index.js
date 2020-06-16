@@ -150,11 +150,17 @@ function startGame() {
         }
     });
 
+    let lastTime = 0;
+
     return function render(time = 0) {
-        player.autoDrop(time, arena);
+        const deltaTime = time - lastTime;
+
+        lastTime = time;
+        player.autoDrop(deltaTime, arena);
+
         draw(arena, player);
         requestAnimationFrame(render);
-    }
+    };
 }
 
 startGame()();
