@@ -1,0 +1,22 @@
+{
+  "name": "multiplayer-tetris",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gopikrishna19/multiplayer-tetris.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Gopikrishna19/multiplayer-tetris/issues"
+  },
+  "homepage": "https://github.com/Gopikrishna19/multiplayer-tetris#readme",
+  "devDependencies": {
+    "express": "^4.17.1"
+  }
+}
