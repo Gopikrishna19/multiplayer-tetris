@@ -70,26 +70,6 @@ function merge(arena, player) {
     });
 }
 
-function rotateMatrix(matrix, direction) {
-    for (let y = 0; y < matrix.length; y += 1) {
-        for (let x = 0; x < y; x += 1) {
-            [
-                matrix[x][y],
-                matrix[y][x],
-            ] = [
-                matrix[y][x],
-                matrix[x][y],
-            ];
-        }
-    }
-
-    if (direction > 0) {
-        matrix.forEach(row => row.reverse());
-    } else {
-        matrix.reverse();
-    }
-}
-
 function clearCanvas() {
     context.fillStyle = '#000';
     context.fillRect(0, 0, WIDTH, HEIGHT);

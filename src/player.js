@@ -42,7 +42,7 @@ class Player {
     };
 
     reset = (arena) => {
-        this.piece = createPiece();
+        this.piece = new Piece();
         this.offset.y = 0;
         this.offset.x = (arena[0].length / 2 | 0) - (this.piece[0].length / 2 | 0);
 
@@ -55,7 +55,7 @@ class Player {
     };
 
     rotate = (arena, direction) => {
-        rotateMatrix(this.piece, direction);
+        this.piece.rotate(direction);
         const playerOffset = this.offset.x;
         let offset = 1;
 
@@ -64,7 +64,7 @@ class Player {
             offset = -(offset + (offset > 0 ? 1 : -1));
 
             if (offset > this.piece[0].length) {
-                rotateMatrix(this.piece, -direction);
+                this.piece.rotate(direction);
                 this.offset.x = playerOffset;
 
                 return;

@@ -1,5 +1,5 @@
-function getPieceCreator() {
-    const PIECES = {
+class Piece extends Array {
+    static PIECES = {
         T: [
             [0, 0, 0],
             [1, 1, 1],
@@ -37,12 +37,34 @@ function getPieceCreator() {
         ],
     };
 
-    return function () {
+    constructor() {
+        super();
+
         const pieces = 'ILJOTSZ';
         const type = pieces[pieces.length * Math.random() | 0];
 
-        return PIECES[type];
-    };
-}
+        const piece = Piece.PIECES[type];
 
-const createPiece = getPieceCreator();
+        piece.forEach((row) => this.push([...row]));
+    }
+
+    rotate = (direction) => {
+        for (let y = 0; y < this.length; y += 1) {
+            for (let x = 0; x < y; x += 1) {
+                [
+                    this[x][y],
+                    this[y][x],
+                ] = [
+                    this[y][x],
+                    this[x][y],
+                ];
+            }
+        }
+
+        if (direction > 0) {
+            this.forEach(row => row.reverse());
+        } else {
+            this.reverse();
+        }
+    }
+}
