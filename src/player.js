@@ -2,6 +2,7 @@ class Player {
     #dropCounter = 0;
     #dropInterval = 1000;
     #onScore = [];
+    #score = 0;
 
     constructor() {
         this.offset = {
@@ -9,7 +10,6 @@ class Player {
             y: 0,
         };
         this.piece = null;
-        this.score = 0;
     }
 
     autoDrop = (deltaTime, arena) => {
@@ -26,7 +26,7 @@ class Player {
         if (arena.isColliding(this)) {
             this.offset.y--;
             arena.merge(this);
-            this.score += arena.sweepAndScore(this);
+            this.#score += arena.sweepAndScore(this);
             this.reset(arena, this);
         }
 
@@ -58,7 +58,7 @@ class Player {
 
         if (arena.isColliding(this)) {
             arena.forEach(row => row.fill(0));
-            this.score = 0;
+            this.#score = 0;
         }
 
         this.updateScore();
@@ -83,6 +83,6 @@ class Player {
     };
 
     updateScore = () => {
-        this.#onScore.forEach(listener => listener(this.score));
+        this.#onScore.forEach(listener => listener(this.#score));
     }
 }

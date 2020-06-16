@@ -14,11 +14,13 @@ const COLORS = [
 ];
 
 class Game {
+    #arena;
     #context;
+    #player;
 
     constructor(player, arena, context) {
-        this.player = player;
-        this.arena = arena;
+        this.#player = player;
+        this.#arena = arena;
         this.#context = context;
     }
 
@@ -29,8 +31,8 @@ class Game {
 
     draw = (width, height) => {
         this.clear(width, height);
-        this.drawMatrix(this.arena, ORIGIN);
-        this.drawMatrix(this.player.piece, this.player.offset);
+        this.drawMatrix(this.#arena, ORIGIN);
+        this.drawMatrix(this.#player.piece, this.#player.offset);
     };
 
     drawMatrix = (matrix, offset) => {
@@ -52,22 +54,22 @@ class Game {
         document.addEventListener('keydown', (event) => {
             switch (event.key) {
                 case 'ArrowLeft':
-                    this.player.move(this.arena, -1);
+                    this.#player.move(this.#arena, -1);
                     break;
                 case 'ArrowRight':
-                    this.player.move(this.arena, +1);
+                    this.#player.move(this.#arena, +1);
                     break;
                 case 'ArrowDown':
-                    this.player.drop(this.arena);
+                    this.#player.drop(this.#arena);
                     break;
                 case 'q':
                 case 'Q':
                 case 'ArrowUp':
-                    this.player.rotate(this.arena, -1);
+                    this.#player.rotate(this.#arena, -1);
                     break;
                 case 'e':
                 case 'E':
-                    this.player.rotate(this.arena, +1);
+                    this.#player.rotate(this.#arena, +1);
                     break;
             }
         });
