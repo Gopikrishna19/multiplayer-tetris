@@ -57,7 +57,7 @@ class Player {
         this.offset.x = (arena[0].length / 2 | 0) - (this.piece[0].length / 2 | 0);
 
         if (arena.isColliding(this)) {
-            arena.forEach(row => row.fill(0));
+            arena.clear();
             this.#score = 0;
         }
 

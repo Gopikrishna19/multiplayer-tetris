@@ -9,6 +9,10 @@ class Arena extends Array {
         }
     }
 
+    clear = () => {
+        this.forEach(row => row.fill(0));
+    }
+
     isColliding = (player) => {
         return player.piece.some((row, y) => {
             return row.some((value, x) => {
