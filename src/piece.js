@@ -37,15 +37,17 @@ class Piece extends Array {
         ],
     };
 
-    constructor() {
-        super();
-
+    static getRandomPiece = () => {
         const pieces = 'ILJOTSZ';
         const type = pieces[pieces.length * Math.random() | 0];
 
-        const piece = Piece.PIECES[type];
+        return Piece.PIECES[type];
+    };
 
-        piece.forEach((row) => this.push([...row]));
+    constructor() {
+        super();
+
+        Piece.getRandomPiece().forEach((row) => this.push([...row]));
     }
 
     rotate = (direction) => {

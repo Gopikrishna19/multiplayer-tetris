@@ -4,13 +4,11 @@ class Player {
     #onScore = [];
     #score = 0;
 
-    constructor() {
-        this.offset = {
-            x: 0,
-            y: 0,
-        };
-        this.piece = null;
-    }
+    offset = {
+        x: 0,
+        y: 0,
+    };
+    piece = null;
 
     autoDrop = (deltaTime, arena) => {
         this.#dropCounter += deltaTime;
