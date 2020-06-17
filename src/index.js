@@ -1,7 +1,22 @@
 const playerElements = document.querySelectorAll('.player');
 
-[...playerElements].forEach(element => {
+const keymaps = [
+    {
+        drop: 's',
+        moveLeft: 'a',
+        moveRight: 'd',
+        rotate: 'w'
+    },
+    {
+        drop: 'ArrowDown',
+        moveLeft: 'ArrowLeft',
+        moveRight: 'ArrowRight',
+        rotate: 'ArrowUp'
+    }
+];
+
+playerElements.forEach((element, index) => {
     const tetris = new Tetris(element);
 
-    tetris.start();
+    tetris.start(keymaps[index]);
 })

@@ -75,26 +75,25 @@ class Game {
         });
     };
 
-    subscribeToKeyboardEvents() {
+    subscribeToKeyboardEvents({
+                                  drop,
+                                  moveLeft,
+                                  moveRight,
+                                  rotate,
+                              }) {
         document.addEventListener('keydown', (event) => {
             switch (event.key) {
-                case 'ArrowLeft':
+                case moveLeft:
                     this.#player.move(this.#arena, -1);
                     break;
-                case 'ArrowRight':
+                case moveRight:
                     this.#player.move(this.#arena, +1);
                     break;
-                case 'ArrowDown':
+                case drop:
                     this.#player.drop(this.#arena);
                     break;
-                case 'q':
-                case 'Q':
-                case 'ArrowUp':
+                case rotate:
                     this.#player.rotate(this.#arena, -1);
-                    break;
-                case 'e':
-                case 'E':
-                    this.#player.rotate(this.#arena, +1);
                     break;
             }
         });
