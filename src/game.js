@@ -1,22 +1,47 @@
-const ORIGIN = {
-    x: 0,
-    y: 0,
-};
-const COLORS = [
-    null,
-    'purple',
-    'yellow',
-    'orange',
-    'blue',
-    'aqua',
-    'green',
-    'red'
-];
-
 class Game {
     #arena;
     #context;
     #player;
+
+    static get ORIGIN() {
+        return {
+            x: 0,
+            y: 0,
+        };
+    }
+
+    static get COLORS() {
+        return [
+            null,
+            'purple',
+            'yellow',
+            'orange',
+            'blue',
+            'aqua',
+            'green',
+            'red',
+        ];
+    }
+
+    static get HEIGHT() {
+        return 400;
+    }
+
+    static get WIDTH() {
+        return 240;
+    }
+
+    static get SCALE() {
+        return Game.HEIGHT / 20;
+    }
+
+    static get ARENA_HEIGHT() {
+        return Game.HEIGHT / Game.SCALE;
+    }
+
+    static get ARENA_WIDTH() {
+        return Game.WIDTH / Game.SCALE;
+    }
 
     constructor(player, arena, context) {
         this.#player = player;
@@ -31,7 +56,7 @@ class Game {
 
     draw = (width, height) => {
         this.clear(width, height);
-        this.drawMatrix(this.#arena, ORIGIN);
+        this.drawMatrix(this.#arena, Game.ORIGIN);
         this.drawMatrix(this.#player.piece, this.#player.offset);
     };
 
@@ -39,7 +64,7 @@ class Game {
         matrix.forEach((row, y) => {
             row.forEach((value, x) => {
                 if (value !== 0) {
-                    this.#context.fillStyle = COLORS[value];
+                    this.#context.fillStyle = Game.COLORS[value];
                     this.#context.fillRect(
                         x + offset.x,
                         y + offset.y,

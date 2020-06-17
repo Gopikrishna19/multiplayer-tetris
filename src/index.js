@@ -1,18 +1,12 @@
 function startGame() {
-    const HEIGHT = 400;
-    const WIDTH = 240;
-    const SCALE = HEIGHT / 20;
-    const ARENA_HEIGHT = HEIGHT / SCALE;
-    const ARENA_WIDTH = WIDTH / SCALE;
-
     const canvas = document.getElementById('tetris');
     const context = canvas.getContext('2d');
 
-    canvas.setAttribute('height', `${HEIGHT}`);
-    canvas.setAttribute('width', `${WIDTH}`);
-    context.scale(SCALE, SCALE);
+    canvas.setAttribute('height', `${Game.HEIGHT}`);
+    canvas.setAttribute('width', `${Game.WIDTH}`);
+    context.scale(Game.SCALE, Game.SCALE);
 
-    const arena = new Arena(ARENA_WIDTH, ARENA_HEIGHT);
+    const arena = new Arena(Game.ARENA_WIDTH, Game.ARENA_HEIGHT);
     const player = new Player();
     const game = new Game(player, arena, context);
 
@@ -28,7 +22,7 @@ function startGame() {
         lastTime = time;
 
         player.autoDrop(deltaTime, arena);
-        game.draw(WIDTH, HEIGHT);
+        game.draw(Game.WIDTH, Game.HEIGHT);
 
         requestAnimationFrame(render);
     };
