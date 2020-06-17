@@ -21,12 +21,12 @@ class Tetris {
         this.#context.scale(Game.SCALE, Game.SCALE);
     }
 
-    start = () => {
+    start = (keymap) => {
         const arena = new Arena(Game.ARENA_WIDTH, Game.ARENA_HEIGHT);
         const player = new Player();
         const game = new Game(player, arena, this.#context);
 
-        game.subscribeToKeyboardEvents();
+        game.subscribeToKeyboardEvents(keymap);
 
         player.onScore( this.#updateScore);
         player.reset(arena);
