@@ -1,6 +1,7 @@
 ((root) => {
     root.messages = {
         CREATE_SESSION: 'create-session',
+        SESSION_ID: 'session-id',
     };
 })((() => {
     let root = {};

@@ -18,9 +18,16 @@ server.on('connection', connection => {
         switch (message) {
             case global.messages.CREATE_SESSION:
                 const session = new Session();
-                console.info('Session created');
 
                 session.join(client);
+                client.send({
+                    message: global.messages.SESSION_ID,
+                    payload: {
+                        sessionId: session.id,
+                    },
+                });
+
+                console.info('Session created');
                 console.info(Session.sessions);
         }
     });
