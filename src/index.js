@@ -1,3 +1,5 @@
-const manager = new TetrisManager(document);
+const tetrisManager = new TetrisManager(document);
+const connectionManager = new ConnectionManager();
 
-manager.createPlayer();
+tetrisManager.createPlayer();
+connectionManager.connect('ws://localhost:8081');

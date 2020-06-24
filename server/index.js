@@ -1,12 +1,24 @@
 const express = require('express');
+const {Server: WebSocketServer} = require('ws');
 const path = require('path');
 
-const port = 8080;
+const webServerPort = 8080;
+const webServer = express();
 
-const app = express();
+webServer.use(express.static(path.join(__dirname, '..', 'src')));
+webServer.listen(webServerPort, () => {
+    console.log(`Web server listening at http://localhost:${webServerPort}`);
+});
 
-app.use(express.static(path.join(__dirname, '..', 'src')));
+const webSocketServerPort = 8081;
+const webSocketServer = new WebSocketServer({port: webSocketServerPort}, () => {
+    console.log(`WebSocket server listening at http://localhost:${webSocketServerPort}`);
+});
 
-app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`);
+webSocketServer.on('connection', connection => {
+    console.log('Connection established');
+
+    connection.on('close', () => {
+        console.log('Connection closed');
+    })
 });
