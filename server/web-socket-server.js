@@ -13,7 +13,7 @@ server.on('connection', connection => {
         console.info('Message received:', message);
 
         switch (message) {
-            case 'create-session':
+            case global.messages.CREATE_SESSION:
                 const session = new Session();
 
                 console.info(Session.sessions);
