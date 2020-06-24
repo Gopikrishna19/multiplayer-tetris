@@ -2,16 +2,15 @@ class Tetris {
     #canvas;
     #context;
     #keymap;
-    #playerElement;
 
     #updateScore = (score) => {
-        this.#playerElement.querySelector('.score').innerText = `Score: ${score}`;
+        this.element.querySelector('.score').innerText = `Score: ${score}`;
     }
 
-    constructor(playerElement, keymap) {
-        this.#playerElement = playerElement;
+    constructor(element, keymap) {
+        this.element = element;
         this.#keymap = keymap;
-        this.#canvas = playerElement.querySelector('.tetris');
+        this.#canvas = element.querySelector('.tetris');
         this.#context = this.#canvas.getContext('2d');
 
         this.setDimensions();

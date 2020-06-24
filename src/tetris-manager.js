@@ -1,6 +1,6 @@
 class TetrisManager {
     #document;
-    #instances = [];
+    #instances = new Set();
     #template;
 
     constructor(document) {
@@ -17,11 +17,16 @@ class TetrisManager {
             rotate: 'ArrowUp',
         });
 
-        this.#instances.push(tetris);
-        this.#document.body.appendChild(element);
+        this.#instances.add(tetris);
+        this.#document.body.appendChild(tetris.element);
 
         tetris.start();
 
         return tetris;
+    }
+
+    removePlayer(tetris) {
+        this.#instances.delete(tetris);
+        this.#document.body.removeChild(tetris.element);
     }
 }
