@@ -8,15 +8,12 @@
         <link rel="stylesheet" href="index.css">
     </head>
     <body>
-        <section class="player">
-            <div class="score"></div>
-            <canvas class="tetris"></canvas>
-        </section>
-
-        <section class="player">
-            <div class="score"></div>
-            <canvas class="tetris"></canvas>
-        </section>
+        <template id="player-template">
+            <section class="player">
+                <div class="score"></div>
+                <canvas class="tetris"></canvas>
+            </section>
+        </template>
 
         <script src="arena.js"></script>
         <script src="piece.js"></script>

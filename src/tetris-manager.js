@@ -1,18 +1,27 @@
 class TetrisManager {
     #document;
-    #instances;
-    #keymaps;
+    #instances = [];
+    #template;
 
-    constructor(document, keymaps) {
+    constructor(document) {
         this.#document = document;
-        this.#keymaps = keymaps;
-
-        const playerElements = this.#document.querySelectorAll('.player');
-
-        this.#instances = [...playerElements].map((element, index) => new Tetris(element, this.#keymaps[index]));
+        this.#template = document.getElementById('player-template');
     }
 
-    start() {
-        this.#instances.forEach(instance => instance.start());
+    createPlayer() {
+        const element = this.#document.importNode(this.#template.content, true).children[0];
+        const tetris = new Tetris(element, {
+            drop: 'ArrowDown',
+            moveLeft: 'ArrowLeft',
+            moveRight: 'ArrowRight',
+            rotate: 'ArrowUp',
+        });
+
+        this.#instances.push(tetris);
+        this.#document.body.appendChild(element);
+
+        tetris.start();
+
+        return tetris;
     }
 }
