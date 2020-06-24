@@ -1,3 +1,4 @@
+require('../common/console');
 require('../common/json');
 require('../common/messages');
 require('./web-server');
