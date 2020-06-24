@@ -12,7 +12,9 @@ server.on('connection', connection => {
 
     const client = new Client(connection);
 
-    connection.on('message', message => {
+    connection.on('message', data => {
+        const {message} = global.parseJsonMessage(data);
+
         console.info('Message received:', message);
 
         switch (message) {
