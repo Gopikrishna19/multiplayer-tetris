@@ -1,14 +1,16 @@
 class Tetris {
     #canvas;
     #context;
+    #keymap;
     #playerElement;
 
     #updateScore = (score) => {
         this.#playerElement.querySelector('.score').innerText = `Score: ${score}`;
     }
 
-    constructor(playerElement) {
+    constructor(playerElement, keymap) {
         this.#playerElement = playerElement;
+        this.#keymap = keymap;
         this.#canvas = playerElement.querySelector('.tetris');
         this.#context = this.#canvas.getContext('2d');
 
@@ -21,21 +23,20 @@ class Tetris {
         this.#context.scale(Game.SCALE, Game.SCALE);
     }
 
-    start = (keymap) => {
+    start = () => {
         const arena = new Arena(Game.ARENA_WIDTH, Game.ARENA_HEIGHT);
         const player = new Player();
         const game = new Game(player, arena, this.#context);
 
-        game.subscribeToKeyboardEvents(keymap);
+        game.subscribeToKeyboardEvents(this.#keymap);
 
-        player.onScore( this.#updateScore);
+        player.onScore(this.#updateScore);
         player.reset(arena);
 
         let lastTime = 0;
 
         function render(time = 0) {
-            console.log('rendering');
-            const deltaTime = time - lastTime;
+           const deltaTime = time - lastTime;
             lastTime = time;
 
             player.autoDrop(deltaTime, arena);

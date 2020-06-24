@@ -1,5 +1,3 @@
-const playerElements = document.querySelectorAll('.player');
-
 const keymaps = [
     {
         drop: 's',
@@ -15,8 +13,6 @@ const keymaps = [
     }
 ];
 
-playerElements.forEach((element, index) => {
-    const tetris = new Tetris(element);
+const manager = new TetrisManager(document, keymaps);
 
-    tetris.start(keymaps[index]);
-})
+manager.start();
