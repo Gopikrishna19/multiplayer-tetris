@@ -18,7 +18,7 @@
   "homepage": "https://github.com/Gopikrishna19/multiplayer-tetris#readme",
   "dependencies": {
     "chalk": "^4.1.0",
-    "express": "^4.17.1",
+    "express": "^4.18.2",
     "ws": "^7.3.0"
   }
 }
